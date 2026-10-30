@@ -128,9 +128,32 @@ function makeClockFormat() {
     : { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
 }
 
+// sunrise/sunset for Kuala Lumpur, computed locally — no network, follows the seasons
+const SUN_LAT = 3.139;
+const SUN_LON = 101.687;
+const SUN_TZ = 8 * 60; // Malaysia is UTC+8 year-round, no DST
+
+// returns [sunrise, sunset] as minutes after 00:00 UTC on that Kuala Lumpur date
+function sunTimes(date) {
+  const kl = new Date(date.getTime() + SUN_TZ * 60000); // shift into KL wall time to pick the right day
+  const dayOfYear = (Date.UTC(kl.getUTCFullYear(), kl.getUTCMonth(), kl.getUTCDate()) - Date.UTC(kl.getUTCFullYear(), 0, 0)) / 86400000;
+  const decl = (-23.44 * Math.cos((2 * Math.PI / 365) * (dayOfYear + 10))) * Math.PI / 180; // radians
+  const lat = SUN_LAT * Math.PI / 180;
+  const cosHa = Math.cos(90.833 * Math.PI / 180) / (Math.cos(lat) * Math.cos(decl)) - Math.tan(lat) * Math.tan(decl);
+  const ha = Math.acos(Math.min(1, Math.max(-1, cosHa))) * 180 / Math.PI; // degrees
+  const b = (2 * Math.PI * (dayOfYear - 81)) / 365;
+  const eot = 9.87 * Math.sin(2 * b) - 7.53 * Math.cos(b) - 1.5 * Math.sin(b); // minutes
+  const noon = 720 - 4 * SUN_LON - eot;
+  return [noon - 4 * ha, noon + 4 * ha];
+}
+
+const toKlMinutes = m => ((Math.round(m + SUN_TZ) % 1440) + 1440) % 1440;
+
 function isNight() {
-  const hour = new Date().getHours();
-  return hour >= 19 || hour < 7;
+  const now = new Date();
+  const [sunrise, sunset] = sunTimes(now).map(toKlMinutes);
+  const minutes = toKlMinutes(now.getUTCHours() * 60 + now.getUTCMinutes());
+  return minutes < sunrise || minutes >= sunset;
 }
 
 function applyLoop() {
