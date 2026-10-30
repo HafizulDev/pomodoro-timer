@@ -1,4 +1,4 @@
-﻿// minutes, kept in localStorage so settings survive a reload
+// minutes, kept in localStorage so settings survive a reload
 const MINUTES = { work: 25, break: 5 };
 const saved = JSON.parse(localStorage.getItem('pomodoro') || '{}');
 for (const k in MINUTES) if (Number.isInteger(saved[k]) && saved[k] >= 1 && saved[k] <= 180) MINUTES[k] = saved[k];
@@ -39,7 +39,6 @@ function draw() {
   $phase.textContent = phase === 'work' ? 'Work' : 'Break';
   $phase.classList.toggle('break', phase === 'break');
   $toggle.textContent = running ? 'Pause' : 'Start';
-  document.title = `${$time.textContent} Â· ${$phase.textContent}`;
 }
 
 // created on the first click so the completion beep is not muted by autoplay rules
@@ -112,7 +111,7 @@ addEventListener('keydown', e => {
   if (e.code === 'Space' && !['INPUT', 'BUTTON'].includes(e.target.tagName)) { e.preventDefault(); running ? pause() : start(); }
 });
 
-// wall clock, top right â€” clicking it switches 12/24-hour, and it re-checks which backdrop should show
+// wall clock, top right - clicking it switches 12/24-hour, and it re-checks which backdrop should show
 const $clock = document.getElementById('clock');
 const $clockTime = document.getElementById('clockTime');
 const $clockMode = document.getElementById('clockMode');
@@ -128,7 +127,7 @@ function makeClockFormat() {
     : { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
 }
 
-// sunrise/sunset for Kuala Lumpur, computed locally — no network, follows the seasons
+// sunrise/sunset for Kuala Lumpur, computed locally - no network, follows the seasons
 const SUN_LAT = 3.139;
 const SUN_LON = 101.687;
 const SUN_TZ = 8 * 60; // Malaysia is UTC+8 year-round, no DST
@@ -188,5 +187,3 @@ setInterval(drawClock, 1000);
 
 syncInputs();
 draw();
-
-
