@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pomodoro</title>
+<link rel="stylesheet" href="styles.css">
+<script src="script.js" defer></script>
+</head>
+<body>
+  <button id="clock" type="button" title="Switch between 12- and 24-hour time">
+    <span id="clockTime"></span><span id="clockMode"></span>
+  </button>
+  <video id="bg" autoplay muted loop playsinline poster="bg.jpg">
+    <source src="bg.mp4" type="video/mp4">
+  </video>
+  <div id="phase">Work</div>
+  <div id="time">25:00</div>
+  <div id="buttons">
+    <button id="toggle">Start</button>
+    <button id="reset">Reset</button>
+  </div>
+  <div id="settings">
+    <label>Work <input id="work" type="number" min="1" max="180" step="1"> min</label>
+    <label>Break <input id="break" type="number" min="1" max="180" step="1"> min</label>
+  </div>
+</body>
+</html>

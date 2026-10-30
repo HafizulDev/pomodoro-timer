@@ -1,0 +1,55 @@
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+body {
+  margin: 0; min-height: 100vh; display: grid; place-content: center; gap: 2rem;
+  font: 16px/1.4 "Segoe UI Variable Display", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* bg.jpg is the poster/fallback; bg.mp4 loops behind the scrim */
+  background-color: #0b1626;
+  background-image: url("bg.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #e8eaed;
+  text-align: center; user-select: none;
+}
+#bg { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+/* dark scrim over the footage so the timer stays readable */
+body::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: -1;
+  background: linear-gradient(rgba(9, 16, 26, .62), rgba(9, 16, 26, .78));
+}
+@media (prefers-reduced-motion: reduce) { #bg { display: none; } }
+/* the night footage is already dark, so it needs less scrim */
+body.night::before { background: linear-gradient(rgba(6, 10, 18, .3), rgba(6, 10, 18, .55)); }
+#phase { font-size: 1.1rem; letter-spacing: .18em; text-transform: uppercase; color: #d3e2ef; text-shadow: 0 1px 6px rgba(0, 0, 0, .45); }
+#phase.break { color: #5fd39a; }
+#time { font: 700 clamp(4rem, 18vw, 9rem)/1 "Cascadia Mono", "SF Mono", Consolas, ui-monospace, monospace; font-variant-numeric: tabular-nums; text-shadow: 0 4px 24px rgba(0, 0, 0, .4); }
+#time.done { color: #ff6b6b; }
+#buttons { display: flex; gap: .75rem; justify-content: center; }
+button {
+  font: inherit; padding: .7rem 1.4rem; border-radius: .5rem; cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, .18); background: rgba(18, 24, 34, .55); color: inherit;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+button:hover { background: rgba(38, 47, 62, .7); }
+#toggle { min-width: 7rem; border-color: rgba(120, 160, 255, .55); background: rgba(42, 75, 176, .72); }
+#toggle:hover { background: rgba(52, 89, 204, .85); }
+#settings { display: flex; gap: 1.5rem; justify-content: center; font-size: .9rem; color: #dbe6f0; text-shadow: 0 1px 6px rgba(0, 0, 0, .45); }
+#settings label { display: flex; align-items: center; gap: .4rem; }
+#settings input {
+  width: 4.5rem; font: inherit; padding: .4rem .5rem; text-align: center;
+  border: 1px solid rgba(255, 255, 255, .18); border-radius: .4rem;
+  background: rgba(18, 24, 34, .55); color: #e8eaed;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+#clock {
+  position: fixed; top: 1.25rem; right: 1.5rem; padding: .4rem .75rem; border-radius: .5rem;
+  display: flex; align-items: center; gap: .45rem; cursor: pointer;
+  font: 600 1rem/1 "Cascadia Mono", "SF Mono", Consolas, ui-monospace, monospace;
+  font-variant-numeric: tabular-nums; color: #eef3f8;
+  border: 1px solid rgba(255, 255, 255, .14); background: rgba(18, 24, 34, .45);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+#clock:hover { background: rgba(30, 39, 53, .6); }
+#clockMode { font-size: .7rem; font-weight: 500; color: #9fb2c6; }
